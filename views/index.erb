@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=800, initial-scale=1">
+    <title>Turbo Disco</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+      *{
+        box-sizing: border-box;
+      }
+      body, html{
+        width: 100%;
+        margin: 0;
+        font-family: 'Permanent Marker', cursive;
+        background-color: #222;
+        background-attachment: fixed;
+      }
+      #logo{
+        font-size: 3rem;
+        text-align: center;
+        margin: 2rem;
+      }
+      #photos{
+        display: flex;
+        flex-direction: column;
+        padding: 0 40px;
+        align-items: center;
+      }
+      .photo{
+        margin-bottom: 5rem;
+      }
+      .photo img{
+        box-shadow: 1px 2px 5px rgba(0,0,0,.6);
+        max-width: 800px;
+      }
+      #loading{
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 4rem;
+        text-shadow: 1px 2px 2px rgba(0,0,0,.9);
+        color: #999;
+      }
+      .left-palm, .right-palm{
+        display: inline-block;
+        transform: scaleY(1.5);
+      }
+      .right-palm{
+        transform: scaleY(1.5) scaleX(-1);
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="logo"><div class="left-palm">🌴</div> <span>Turbo Disco</span> <div class="right-palm">🌴</div></h1>
+    <div id="photos"></div>
+    <div id="loading">Loading</div>
+    <script>
+      var photoStore = <%= photoStore %>;
+      var $photos = $("#photos");
+      var $win = $(window);
+      var $html = $('html');
+      var photosPerPage = 5;
+      var currentPage = 0;
+
+      function appendPhoto(photo){
+        $photos.append(
+          '<a class="photo" href="/' + photo.original + '">' +
+            '<img src="/' + photo.resized_800 + '">' +
+          '</a>'
+        );
+      }
+
+      function loadPage(pageNum){
+        toLoad = photoStore.photos.slice(pageNum * photosPerPage, (pageNum + 1) * photosPerPage);
+        if(toLoad.length > 0){
+          _.each(toLoad, appendPhoto);
+          _.delay(scrollSpyOn, 200);
+        } else {
+          noMorePhotos();
+        }
+      }
+
+      function loadOnScroll() {
+        var load_threshold = 500;
+        var scroll_bottom = $win.scrollTop() + $win.height();
+        var page_bottom = $html.height()
+        if(page_bottom - scroll_bottom < load_threshold){
+          $win.off('scroll', loadOnScroll);
+          currentPage = currentPage + 1;
+          loadPage(currentPage);
+        }
+      }
+
+      function noMorePhotos(){
+        $win.off('scroll', loadOnScroll);
+        $("#loading").html("Fin");
+      }
+
+      function scrollSpyOn(){
+        $win.on('scroll', loadOnScroll);
+      }
+
+
+      // Kick it off
+      loadPage(currentPage);
+      scrollSpyOn();
+
+    </script>
+
+    <!-- Rainbow Text -->
+    <script>
+        var step = 30, // colorChage step, use negative value to change direction
+            ms   = 100,  // loop every
+            $uni = $('#logo span'),
+            txt  = $uni.text(),
+            len  = txt.length,
+            lev  = 360/len,
+            newCont = "",
+            itv;
+
+        for(var i=0; i<len; i++){
+            newCont += "<span style='color:hsla("+ i*lev +", 100%, 50%, 1)'>"+ txt.charAt(i) +"</span>";
+        }
+
+        $uni.html(newCont); // Replace with new content
+        var $ch = $uni.find('span'); // character
+
+        function anim(){
+          itv = setInterval(function(){
+            $ch.each(function(){
+              var h = +$(this).attr('style').split(',')[0].split('(')[1]-step % 360;
+              $(this).attr({style:"color:hsla("+ h +", 100%, 50%, 1)"});
+            });
+          }, ms);
+        }
+        function stop(){ clearInterval(itv); }
+
+        anim()
+    </script>
+  </body>
+</html>
+
