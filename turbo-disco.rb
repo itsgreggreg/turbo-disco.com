@@ -49,12 +49,7 @@ post '/upload' do
       }
     )
   savePhotoStore photoStore
-def initialPhotoStore
-  {
-    :photos => []
-  }
-end
-  params.inspect
+  erb :upload
 end
 
 
