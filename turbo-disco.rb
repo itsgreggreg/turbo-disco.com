@@ -90,7 +90,7 @@ end
 get '/admin/status' do
   status = `git status`
   diff = `git diff`
-  erb :status, locals: {:status => toBr(status), :diff => toBr(diff)}
+  erb :status, :locals => {:status => toBr(status), :diff => toBr(diff)}
 end
 
 #
@@ -101,7 +101,7 @@ get '/admin/save' do
   add = `git add . -v`
   commit = `git commit -m"#{message}" -v`
   push = `git push -v`
-  erb :save, locals: {:add => toBr(add), :commit => toBr(commit), :push => toBr(push)}
+  erb :save, :locals => {:add => toBr(add), :commit => toBr(commit), :push => toBr(push)}
 end
 
 #
@@ -109,7 +109,7 @@ end
 #
 get '/admin/update' do
   pull = `git pull -v`
-  erb :pull, locals: {:pull => pull}
+  erb :pull, :locals => {:pull => pull}
 end
 
 #
