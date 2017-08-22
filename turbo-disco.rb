@@ -90,7 +90,7 @@ get '/admin/save' do
   add = `git add .`
   commit = `git commit -m"Commit from the web interface"`
   push = `git push`
-  "ADD: #{add}\n\n COMMIT: #{commit}\n\n PUSH: #{push}\n\n"
+  "ADD: #{add}<br><br> COMMIT: #{commit}<br><br> PUSH: #{push}"
 end
 
 #
