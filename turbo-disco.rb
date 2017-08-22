@@ -116,6 +116,7 @@ end
 # Restart
 #
 get '/admin/restart' do
+  `touch tmp/restart`
   "Restart attempted"
 end
 
