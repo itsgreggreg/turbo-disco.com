@@ -31,10 +31,16 @@
       }
       .photo{
         margin-bottom: 5rem;
+        font-family: monospace;
+        color: whitesmoke;
+        text-decoration: none;
       }
       .photo img{
         box-shadow: 1px 2px 5px rgba(0,0,0,.6);
         max-width: 100%;
+      }
+      .caption{
+        text-align: right;
       }
       #loading{
         text-align: center;
@@ -73,6 +79,7 @@
         $photos.append(
           '<a class="photo" href="/' + photo.original + '">' +
             '<img src="/' + photo.resized_800 + '">' +
+            '<div class="caption">' + photo.caption + '</div>'+
           '</a>'
         );
       }
