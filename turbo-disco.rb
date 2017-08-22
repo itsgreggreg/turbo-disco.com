@@ -84,21 +84,32 @@ get '/logout' do
 end
 
 #
+# Git Status
+#
+
+get '/admin/status' do
+  status = `git status`
+  diff = `git diff`
+  erb :status, locals: {:status => toBr(status), :diff => toBr(diff)}
+end
+
+#
 # Save to git
 #
 get '/admin/save' do
-  add = `git add .`
-  commit = `git commit -m"Commit from the web interface"`
-  push = `git push`
-  erb :save, locals: {:add => add, :commit => commit, :push => push}
+  message = params['message'] || "Commit from web interface."
+  add = `git add . -v`
+  commit = `git commit -m"#{message}" -v`
+  push = `git push -v`
+  erb :save, locals: {:add => toBr(add), :commit => toBr(commit), :push => toBr(push)}
 end
 
 #
 # Update from git
 #
 get '/admin/update' do
-  pull = `git pull`
-  "PULL: #{pull}\n\n"
+  pull = `git pull -v`
+  erb :pull, locals: {:pull => pull}
 end
 
 ###########################
@@ -129,4 +140,8 @@ end
 
 def here
   File.expand_path '..', __FILE__
+end
+
+def toBr(str)
+  str.gsub(/(?:\n\r?|\r\n?)/, '<br>')
 end
