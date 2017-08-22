@@ -112,6 +112,13 @@ get '/admin/update' do
   erb :pull, locals: {:pull => pull}
 end
 
+#
+# Restart
+#
+get '/admin/restart' do
+  "Restart attempted"
+end
+
 ###########################
 # HELPERS
 ###########################
