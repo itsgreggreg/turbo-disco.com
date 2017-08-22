@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require 'open-uri'
 
 # Sinatra Config
 enable :sessions
@@ -33,7 +34,7 @@ end
 post '/upload' do
   unless params['file'] &&
          (tmpfile = params['file'][:tempfile]) &&
-         (filename = params['file'][:filename]) &&
+         (filename = URI::encode(params['file'][:filename])) &&
          (caption = params["caption"])
     return "There was an error processing the upload"
   end
