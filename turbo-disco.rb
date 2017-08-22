@@ -33,7 +33,7 @@ end
 post '/upload' do
   unless params['file'] &&
          (tmpfile = params['file'][:tempfile]) &&
-         (filename = params['file'][:filename].gsub(/\s/, '-') &&
+         (filename = params['file'][:filename].gsub(/\s/, '-')) &&
          (caption = params["caption"])
     return "There was an error processing the upload"
   end
