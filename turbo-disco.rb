@@ -90,7 +90,7 @@ get '/admin/save' do
   add = `git add .`
   commit = `git commit -m"Commit from the web interface"`
   push = `git push`
-  "ADD: #{add}<br><br> COMMIT: #{commit}<br><br> PUSH: #{push}"
+  erb :add, locals: {:add => add, :commit => commit, :push => push}
 end
 
 #
