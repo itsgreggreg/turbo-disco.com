@@ -1,23 +1,26 @@
 require 'sinatra'
 require 'json'
 
-def here
-  File.expand_path '..', __FILE__
-end
-
-
+# Sinatra Config
 enable :sessions
 
-password = "aoeusnth"
+password = File.read "password.txt"
 
+###########################
+# Routes
+###########################
+#
+# Root
+#
 get '/' do
   erb :index, :locals => {:photoStore =>  File.read(File.join(here, 'photos.json'))}
 end
 
+#
+# Upload
+#
 before '/upload' do
-  if session['loggedIn'] == true
-    :nil
-  else
+  unless loggedIn?
     redirect to('/login')
   end
 end
@@ -29,10 +32,9 @@ end
 post '/upload' do
   unless params['file'] &&
          (tmpfile = params['file'][:tempfile]) &&
-         (filename = params["file"]["filename"]) &&
+         (filename = params['file'][:filename]) &&
          (caption = params["caption"])
-    @error = "No file selected"
-    return erb :upload
+    return "There was an error processing the upload"
   end
   # Write the temp file
   while blk = tmpfile.read(65536)
@@ -52,7 +54,9 @@ post '/upload' do
   erb :upload
 end
 
-
+#
+# Login
+#
 get '/login' do
   if loggedIn?
     redirect to("/")
@@ -60,7 +64,6 @@ get '/login' do
     erb :login
   end
 end
-
 
 post '/login' do
   if params['password'] == password
@@ -71,12 +74,17 @@ post '/login' do
   end
 end
 
+#
+# Logout
+#
 get '/logout' do
   session['loggedIn'] = false
   redirect to("/")
 end
 
+###########################
 # HELPERS
+###########################
 def loggedIn?
   session['loggedIn'] == true
 end
@@ -98,4 +106,8 @@ end
 def initialPhotoStore
   { "photos" => []
   }
+end
+
+def here
+  File.expand_path '..', __FILE__
 end
