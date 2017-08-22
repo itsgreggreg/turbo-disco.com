@@ -2,7 +2,6 @@
 <html>
   <head lang="en">
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=800, initial-scale=1">
     <title>Turbo Disco</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.0/zepto.min.js"></script>
@@ -26,7 +25,7 @@
       #photos{
         display: flex;
         flex-direction: column;
-        padding: 0 40px;
+        padding: 0 5px;
         align-items: center;
       }
       .photo{
@@ -34,7 +33,7 @@
       }
       .photo img{
         box-shadow: 1px 2px 5px rgba(0,0,0,.6);
-        max-width: 800px;
+        max-width: 100%;
       }
       #loading{
         text-align: center;
@@ -49,6 +48,11 @@
       }
       .right-palm{
         transform: scaleY(1.5) scaleX(-1);
+      }
+      @media all and (max-width: 799px) {
+        #logo{
+            font-size: 2rem;
+        }
       }
     </style>
   </head>
