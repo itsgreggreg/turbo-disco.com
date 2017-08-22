@@ -20,17 +20,17 @@ end
 #
 # Upload
 #
-before '/upload' do
+before '/admin/*' do
   unless loggedIn?
     redirect to('/login')
   end
 end
 
-get '/upload' do
+get '/admin/upload' do
   erb :upload
 end
 
-post '/upload' do
+post '/admin/upload' do
   unless params['file'] &&
          (tmpfile = params['file'][:tempfile]) &&
          (filename = params['file'][:filename].gsub(/\s/, '-')) &&
@@ -45,7 +45,7 @@ post '/upload' do
   `convert public/originals/#{filename}  -resize 800x800  public/resized_800/#{filename}`
   # Add it to the JSON file
   photoStore = readPhotoStore
-  photoStore["photos"] = photoStore["photos"].push(
+  photoStore["photos"] = photoStore["photos"].unshift(
       {:original => "originals/#{filename}",
        :resized_800 => "resized_800/#{filename}",
        :caption => caption
@@ -60,7 +60,7 @@ end
 #
 get '/login' do
   if loggedIn?
-    redirect to("/")
+    redirect to("/admin/upload")
   else
     erb :login
   end
@@ -69,7 +69,7 @@ end
 post '/login' do
   if params['password'] == password
     session['loggedIn'] = true
-    redirect to("/upload")
+    redirect to("/admin/upload")
   else
     erb :login
   end
@@ -81,6 +81,24 @@ end
 get '/logout' do
   session['loggedIn'] = false
   redirect to("/")
+end
+
+#
+# Save to git
+#
+get '/admin/save' do
+  add = `git add .`
+  commit = `git commit -m"Commit from the web interface"`
+  push = `git push`
+  "ADD: #{add}\n\n COMMIT: #{commit}\n\n PUSH: #{push}\n\n"
+end
+
+#
+# Update from git
+#
+get '/admin/update' do
+  pull = `git pull`
+  "PULL: #{pull}\n\n"
 end
 
 ###########################
@@ -100,7 +118,7 @@ end
 
 def savePhotoStore(photoStore)
   File.open(File.join(here, "photos.json"),"w") do |f|
-    f.write photoStore.to_json
+    f.write JSON.pretty_generate(photoStore)
   end
 end
 
