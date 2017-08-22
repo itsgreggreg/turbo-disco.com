@@ -4,7 +4,8 @@ require 'json'
 # Sinatra Config
 enable :sessions
 
-password = File.read "password.txt"
+# App Config
+password = File.read("password.txt").strip
 
 ###########################
 # Routes
