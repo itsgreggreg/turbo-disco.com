@@ -1,10 +1,10 @@
 <html>
-<%h2> Edit </h2>
-<% if status %>
-  <h4><%= status %></h3>
+<h2> Edit </h2>
+<% if message %>
+  <h4><%= message %></h3>
 <% end %>
 <form method="post" action="/admin/edit">
-  <textarex style="width:100%;height:80%;"><%= photoStore %></textarea>
+  <textarea name="photoStore" style="width:100%;height:80%;"><%= photoStore %></textarea>
   <br>
   <input type="submit" value="Save">
 </form>

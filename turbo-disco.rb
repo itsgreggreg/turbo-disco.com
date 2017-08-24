@@ -59,7 +59,10 @@ end
 # Edit
 #
 get '/admin/edit' do
-  erb :edit, :locals => {:photoStore => File.read(File.join(here, 'photos.json'))}
+  erb :edit, :locals => {
+    :photoStore => File.read(File.join(here, 'photos.json')),
+    :message => nil
+  }
 end
 
 post '/admin/edit' do
@@ -69,7 +72,10 @@ post '/admin/edit' do
     savePhotoStore photoStore
     erb :edit, :locals => {:photoStore => photoStoreJson, :message => "Saved"}
   rescue
-    erb :edit, :locals => {:photoStore => photoStoreJson, :message => "There was a problem saving the Photo Store"}
+    erb :edit, :locals => {
+      :photoStore => photoStoreJson,
+      :message => "There was a problem saving the Photo Store"
+    }
   end
 end
 
