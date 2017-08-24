@@ -56,6 +56,24 @@ post '/admin/upload' do
 end
 
 #
+# Edit
+#
+get '/admin/edit' do
+  erb :edit, :locals => {:photoStore => File.read(File.join(here, 'photos.json'))}
+end
+
+post '/admin/edit' do
+  photoStoreJson = params['photoStore']
+  begin
+    photoStore = JSON.parse photoStoreJson
+    savePhotoStore photoStore
+    erb :edit, :locals => {:photoStore => photoStoreJson, :message => "Saved"}
+  rescue
+    erb :edit, :locals => {:photoStore => photoStoreJson, :message => "There was a problem saving the Photo Store"}
+  end
+end
+
+#
 # Login
 #
 get '/login' do
