@@ -1,0 +1,10 @@
+<html>
+<%h2> Edit </h2>
+<% if status %>
+  <h4><%= status %></h3>
+<% end %>
+<form method="post" action="/admin/edit">
+  <textarex style="width:100%;height:80%;"><%= photoStore %></textarea>
+  <br>
+  <input type="submit" value="Save">
+</form>
