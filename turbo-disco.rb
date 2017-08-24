@@ -138,6 +138,10 @@ get '/admin/restart' do
   "Restart attempted"
 end
 
+get '/stats' do
+  "#{readPhotoStore['photos'].length} photos"
+end
+
 ###########################
 # HELPERS
 ###########################
