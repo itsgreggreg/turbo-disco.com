@@ -116,7 +116,7 @@
       }
 
       // Handler for photo click
-      $win.on('dblclick', '.photo', function(e){
+      $win.on('dblclick doubleTap longTap', '.photo', function(e){
         window.open($(this).data('href'));
       });
 
