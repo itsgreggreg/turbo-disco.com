@@ -101,7 +101,7 @@
       function loadOnScroll() {
         var load_threshold = 500;
         var scroll_bottom = $win.scrollTop() + $win.height();
-        var page_bottom = $html.height()
+        var page_bottom = $html.height() | $(document).height();
         if(page_bottom - scroll_bottom < load_threshold){
           $win.off('scroll', loadOnScroll);
           currentPage = currentPage + 1;
