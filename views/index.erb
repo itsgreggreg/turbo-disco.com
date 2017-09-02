@@ -78,10 +78,10 @@
 
       function appendPhoto(photo){
         $photos.append(
-          '<a class="photo" href="/' + photo.original + '">' +
+          '<div class="photo" data-href="/' + photo.original + '">' +
             '<img src="/' + photo.resized_800 + '">' +
             '<div class="caption">' + photo.caption + '</div>'+
-          '</a>'
+          '</div>'
         );
       }
 
@@ -115,6 +115,10 @@
         $win.on('scroll', loadOnScroll);
       }
 
+      // Handler for photo click
+      $win.on('dblclick', '.photo', function(e){
+        window.open($(this).data('href'));
+      });
 
       // Kick it off
       loadPage(currentPage);
